@@ -34,6 +34,8 @@ import live.hms.roomkit.ui.notification.HMSNotificationType
 import live.hms.roomkit.ui.polls.display.POLL_TO_DISPLAY
 import live.hms.roomkit.ui.polls.display.PollDisplayFragment
 import live.hms.roomkit.ui.settings.SettingsStore
+import live.hms.roomkit.util.LIVE_ICONS_STATUS
+import live.hms.roomkit.util.LOGO_URL
 import live.hms.roomkit.util.ROOM_CODE
 import live.hms.roomkit.util.ROOM_PREBUILT
 import live.hms.roomkit.util.TOKEN
@@ -86,6 +88,9 @@ class MeetingActivity : AppCompatActivity() {
 
         val roomCode: String = intent?.getStringExtra(ROOM_CODE)?:""
         val token: String = intent?.getStringExtra(TOKEN)?:""
+
+        meetingViewModel.isLiveIconsEnabled = intent?.getBooleanExtra(LIVE_ICONS_STATUS ,false)
+        meetingViewModel.roomLogoUrl = intent?.getStringExtra(LOGO_URL)
 
         if (roomCode.isEmpty() && token.isEmpty()) {
             Toast.makeText(this, "Room code or token is required", Toast.LENGTH_SHORT).show()

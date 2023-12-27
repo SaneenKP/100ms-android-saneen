@@ -86,6 +86,8 @@ class MeetingViewModel(
     var roleOnJoining : HMSRole? = null
         private set
 
+    var roomLogoUrl : String? = null
+    var isLiveIconsEnabled : Boolean? = null
     fun isLargeRoom() = hmsRoom?.isLargeRoom?:false
 
     private val hmsTrackSettings = HMSTrackSettings.Builder()

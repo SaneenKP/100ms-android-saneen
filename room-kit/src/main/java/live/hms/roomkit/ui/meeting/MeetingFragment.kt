@@ -357,6 +357,14 @@ class MeetingFragment : Fragment() {
         }
     }
 
+    private fun handleLiveViewsVisibility(isLiveViewsEnabled : Boolean?){
+        val viewVisibility = if (isLiveViewsEnabled == false) View.GONE else View.VISIBLE
+        binding.recordingSignalProgress.visibility = viewVisibility
+        binding.recordingSignal.visibility = viewVisibility
+        binding.recordingPause.visibility = viewVisibility
+        binding.liveTitleCard.visibility = viewVisibility
+    }
+
     private fun updateStreamingViews(state: HMSStreamingState) {
         when (state) {
             HMSStreamingState.STARTING -> {
@@ -368,7 +376,10 @@ class MeetingFragment : Fragment() {
 
             HMSStreamingState.STARTED -> {
                 binding.meetingFragmentProgress.visibility = View.GONE
-                binding.liveTitleCard.visibility = View.VISIBLE
+
+                /** binding.liveTitleCard.visibility = View.VISIBLE **/
+                handleLiveViewsVisibility(meetingViewModel.isLiveIconsEnabled)
+
                 if (meetingViewModel.isRTMPRunning()) {
                     binding.liveTitle.text = "Live with RTMP"
                 } else {
@@ -435,6 +446,7 @@ class MeetingFragment : Fragment() {
 
         meetingViewModel.recordingState.observe(viewLifecycleOwner) { state ->
             updateRecordingViews(state)
+            handleLiveViewsVisibility(meetingViewModel.isLiveIconsEnabled)
         }
 
         meetingViewModel.streamingState.observe(viewLifecycleOwner) { state ->
@@ -1233,7 +1245,18 @@ class MeetingFragment : Fragment() {
             if (it.isEnabled) meetingViewModel.flipCamera()
         }
 
-        if (meetingViewModel.getHmsRoomLayout()?.data?.getOrNull(0)?.logo?.url.isNullOrEmpty()) {
+        if (!meetingViewModel.roomLogoUrl.isNullOrEmpty()){
+            binding.logoIv.let {
+                Glide.with(this)
+                    .load(meetingViewModel.roomLogoUrl)
+                    .into(it)
+            }
+        }else{
+            binding.logoIv.visibility = View.GONE
+        }
+
+        /***
+          if (meetingViewModel.getHmsRoomLayout()?.data?.getOrNull(0)?.logo?.url.isNullOrEmpty()) {
             binding.logoIv?.visibility = View.GONE
         } else {
             binding.logoIv.visibility = View.VISIBLE
@@ -1243,6 +1266,9 @@ class MeetingFragment : Fragment() {
                     .into(it)
             }
         }
+         ***/
+
+        handleLiveViewsVisibility(meetingViewModel.isLiveIconsEnabled)
     }
 
     private fun isOverlayChatVisible() : Boolean {
