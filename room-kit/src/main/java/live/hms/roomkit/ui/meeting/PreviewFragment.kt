@@ -39,7 +39,6 @@ import live.hms.roomkit.ui.settings.SettingsStore
 import live.hms.roomkit.ui.theme.applyTheme
 import live.hms.roomkit.ui.theme.buttonDisabled
 import live.hms.roomkit.ui.theme.buttonEnabled
-import live.hms.roomkit.ui.theme.getCurrentRoleData
 import live.hms.roomkit.ui.theme.getPreviewLayout
 import live.hms.roomkit.ui.theme.setIconDisabled
 import live.hms.roomkit.ui.theme.setIconEnabled
@@ -546,7 +545,7 @@ class PreviewFragment : Fragment() {
 
             val isLiveWithHLSOrRTMP = it.second.hlsStreamingState.state == HMSStreamingState.STARTED ||
                     it.second.rtmpHMSRtmpStreamingState.state == HMSStreamingState.STARTED
-            if (isLiveWithHLSOrRTMP && meetingViewModel.isLiveIconsEnabled == true) {
+            if (isLiveWithHLSOrRTMP && meetingViewModel.isLiveIconEnabled == true) {
                 binding.liveHlsGroup.visibility = View.VISIBLE
                 binding.hlsSession.startBounceAnimationUpwards()
             } else {

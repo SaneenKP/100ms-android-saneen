@@ -87,7 +87,8 @@ class MeetingViewModel(
         private set
 
     var roomLogoUrl : String? = null
-    var isLiveIconsEnabled : Boolean? = null
+    var isLiveIconEnabled : Boolean? = null
+    var isRecordingIconsEnabled : Boolean? = null
     fun isLargeRoom() = hmsRoom?.isLargeRoom?:false
 
     private val hmsTrackSettings = HMSTrackSettings.Builder()

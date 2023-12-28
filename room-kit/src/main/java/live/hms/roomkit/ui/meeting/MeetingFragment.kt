@@ -332,7 +332,14 @@ class MeetingFragment : Fragment() {
         requireActivity().finish()
     }
 
-    private fun updateRecordingViews(state: HMSRecordingState) {
+    private fun updateRecordingViews(state: HMSRecordingState , isRecordingIconsEnabled : Boolean?) {
+        if (isRecordingIconsEnabled == false){
+            binding.recordingSignalProgress.visibility = View.GONE
+            binding.recordingSignal.visibility = View.GONE
+            binding.recordingPause.visibility = View.GONE
+            return
+        }
+
         when (state) {
             HMSRecordingState.STARTING -> {
                 binding.recordingSignalProgress.visibility = View.VISIBLE
@@ -357,14 +364,6 @@ class MeetingFragment : Fragment() {
         }
     }
 
-    private fun handleLiveViewsVisibility(isLiveViewsEnabled : Boolean?){
-        val viewVisibility = if (isLiveViewsEnabled == false) View.GONE else View.VISIBLE
-        binding.recordingSignalProgress.visibility = viewVisibility
-        binding.recordingSignal.visibility = viewVisibility
-        binding.recordingPause.visibility = viewVisibility
-        binding.liveTitleCard.visibility = viewVisibility
-    }
-
     private fun updateStreamingViews(state: HMSStreamingState) {
         when (state) {
             HMSStreamingState.STARTING -> {
@@ -378,7 +377,11 @@ class MeetingFragment : Fragment() {
                 binding.meetingFragmentProgress.visibility = View.GONE
 
                 /** binding.liveTitleCard.visibility = View.VISIBLE **/
-                handleLiveViewsVisibility(meetingViewModel.isLiveIconsEnabled)
+                if (meetingViewModel.isLiveIconEnabled==false){
+                    binding.liveTitleCard.visibility = View.GONE
+                }else{
+                    binding.liveTitleCard.visibility = View.VISIBLE
+                }
 
                 if (meetingViewModel.isRTMPRunning()) {
                     binding.liveTitle.text = "Live with RTMP"
@@ -445,8 +448,7 @@ class MeetingFragment : Fragment() {
         }
 
         meetingViewModel.recordingState.observe(viewLifecycleOwner) { state ->
-            updateRecordingViews(state)
-            handleLiveViewsVisibility(meetingViewModel.isLiveIconsEnabled)
+            updateRecordingViews(state , meetingViewModel.isRecordingIconsEnabled)
         }
 
         meetingViewModel.streamingState.observe(viewLifecycleOwner) { state ->
@@ -1268,7 +1270,6 @@ class MeetingFragment : Fragment() {
         }
          ***/
 
-        handleLiveViewsVisibility(meetingViewModel.isLiveIconsEnabled)
     }
 
     private fun isOverlayChatVisible() : Boolean {

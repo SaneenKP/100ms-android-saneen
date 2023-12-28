@@ -8,11 +8,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
@@ -21,9 +19,6 @@ import live.hms.roomkit.R
 import live.hms.roomkit.animation.RootViewDeferringInsetsCallback
 import live.hms.roomkit.databinding.ActivityMeetingBinding
 import live.hms.roomkit.ui.HMSPrebuiltOptions
-import live.hms.roomkit.ui.meeting.chat.combined.CHAT_TAB_TITLE
-import live.hms.roomkit.ui.meeting.chat.combined.ChatParticipantCombinedFragment
-import live.hms.roomkit.ui.meeting.chat.combined.OPEN_TO_PARTICIPANTS
 import live.hms.roomkit.ui.notification.CardStackLayoutManager
 import live.hms.roomkit.ui.notification.CardStackListener
 import live.hms.roomkit.ui.notification.Direction
@@ -31,11 +26,11 @@ import live.hms.roomkit.ui.notification.HMSNotification
 import live.hms.roomkit.ui.notification.HMSNotificationAdapter
 import live.hms.roomkit.ui.notification.HMSNotificationDiffCallBack
 import live.hms.roomkit.ui.notification.HMSNotificationType
-import live.hms.roomkit.ui.polls.display.POLL_TO_DISPLAY
 import live.hms.roomkit.ui.polls.display.PollDisplayFragment
 import live.hms.roomkit.ui.settings.SettingsStore
-import live.hms.roomkit.util.LIVE_ICONS_STATUS
+import live.hms.roomkit.util.LIVE_ICON_STATUS
 import live.hms.roomkit.util.LOGO_URL
+import live.hms.roomkit.util.RECORDING_ICONS_STATUS
 import live.hms.roomkit.util.ROOM_CODE
 import live.hms.roomkit.util.ROOM_PREBUILT
 import live.hms.roomkit.util.TOKEN
@@ -89,7 +84,8 @@ class MeetingActivity : AppCompatActivity() {
         val roomCode: String = intent?.getStringExtra(ROOM_CODE)?:""
         val token: String = intent?.getStringExtra(TOKEN)?:""
 
-        meetingViewModel.isLiveIconsEnabled = intent?.getBooleanExtra(LIVE_ICONS_STATUS ,false)
+        meetingViewModel.isLiveIconEnabled = intent?.getBooleanExtra(LIVE_ICON_STATUS ,true)
+        meetingViewModel.isRecordingIconsEnabled = intent?.getBooleanExtra(RECORDING_ICONS_STATUS , true)
         meetingViewModel.roomLogoUrl = intent?.getStringExtra(LOGO_URL)
 
         if (roomCode.isEmpty() && token.isEmpty()) {
